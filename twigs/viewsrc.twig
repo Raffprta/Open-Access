@@ -1,0 +1,37 @@
+{# Page to view sourcecode, similar to Lindsay Marshall's unreleased source code viewer #}
+
+{% extends 'page.twig' %}
+
+{% block css %}
+    <!-- Highligh JS CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css">
+{% endblock %}
+
+{% block scripts %}
+    <!-- Highlight JS -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endblock scripts %}
+
+
+{% block header %}
+    {% if code %}
+        <div class="col-md-12">
+            <h1 class="cntr">
+                Viewing Source Code of: {{title}}
+            </h1>
+        </div>
+    {% endif %}
+{% endblock header %}
+
+{% block main %}
+    {% if code %}
+        <section>
+            <pre><code>{{code}}</code></pre>
+        </section>
+    {% else %}
+        <div class="alert alert-info" role="alert">{{error}}</div>
+    {% endif %}
+    
+{% endblock main %}
+

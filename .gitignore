@@ -1,0 +1,7 @@
+*.zip
+*.rar
+*.tar
+*.7z
+vendor/
+class/kint
+assets/data

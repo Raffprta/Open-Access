@@ -1,0 +1,150 @@
+{# Page based on roles.twig which offers similar functionality #}
+{% extends 'page.twig' %}
+
+{% macro tick(val, class) %}
+<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
+{% endmacro tick %}
+
+{% import _self as h %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/util.js"></script>
+{% endblock scripts %}
+
+{% block onload %}
+    $('#nrform').on('submit', false)
+    $('#addb').on('click', function(e){
+        e.preventDefault()
+        var pn = $('#nrname').val()
+    if (!pn.match(/^[a-zA-Z][a-zA-Z\s]*$/))
+    {
+        bootbox.alert('&quot;'+pn+'&quot; is not a valid publication name. Letters and spaces only')
+        return
+    }
+    var sp = null
+    var error = false
+    $('.rname').each(function(e){
+        var t = $(this).text()
+        if (t == pn)
+        {
+            error = true
+            return false
+        }
+        if (t > pn)
+        {
+        sp = $(this)
+        return false
+        }
+    })
+    if (error)
+    {
+        bootbox.alert('That publication already exists')
+        return
+    }
+    $('#npub').modal('hide')
+    var htm = '<tr><td>'+pn+'</td><td><i class="delb fa fa-trash-o"></i></td></tr>'
+    var nx
+    if (sp == null)
+    {
+        nx = $(htm).appendTo($('#rtab tbody'))
+    }
+    else
+    {
+        nx = $(htm).insertBefore(sp.parent())
+    }
+    $.post('{{base}}/ajax.php', {
+        op : 'addtype',
+        name : pn,
+        }, function(data){
+           nx.data('id', data)
+        }
+    )
+    })
+    $('#rtab').on('click', function(e){
+        var x = $(e.target)
+    if (x.hasClass('delb'))
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        bootbox.confirm('Are you sure you you want to delete this publication?', function(r){
+            if (r)
+        { // user picked OK
+            var tr = $(x).parent().parent()
+            $.post('{{base}}/ajax.php', {
+                op :'delbean',
+                'bean' : 'type',
+                id : tr.data('id')
+            },
+            function(data){
+                tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove() })
+            }
+            )
+        }
+        })
+    }
+    else if (x.hasClass('fixed'))
+    {
+        dotoggle(e, x, 'type', 'fixed')
+    }
+    })
+    $('#npub').on('show.bs.modal', function(e){
+    $('#nrform input').val('')
+    })
+{% endblock onload %}
+
+{% block header %}
+    <div class="col-md-12">
+    <h1>Publications</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <table class="table table-hover" id="rtab">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+        <tbody>
+            {% for t in siteinfo.publicationtypes %}
+            <tr data-id="{{t.id}}">
+                <td class="rname">{{t.name}}</td>
+                <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb fa fa-trash-o"></i>{% endif %}</td>
+            </tr>
+            {% else %}
+                <tr><td colspan="3">No publications defined</td></tr>
+            {% endfor %}
+        </tbody>
+            </table>
+        <p><button class="btn btn-primary" data-toggle="modal" data-target="#npub" type="button">Add publication</button></p>
+        </div>
+    </div>
+    <div class="modal fade" id="npub">
+        <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">New publication</h4>
+                    </div>
+                        <div class="modal-body">
+                            <form action="#" method="POST" id="nrform">
+                                <div class="form-group">
+                                    <label for="nrname">Name</label>
+                                    <input type="text" class="form-control" id="nrname" placeholder="publication name" required="required"/>
+                                </div>
+                           </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="addb">Add</button>
+                        </div>
+                </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

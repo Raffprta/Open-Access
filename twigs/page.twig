@@ -1,0 +1,83 @@
+<!doctype html>
+<!--[if lt IE 9]><html class="ie"><![endif]-->
+<!--[if gte IE 9]><!--><html><!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+
+    <title>{% block title %}{{context.sitename|upper}}{% endblock title %}</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+{#
+    <link rel="shortcut icon" href="{{assets}}/img/favicon.png"/>
+    <link rel="icon" type="image/png" href="{{assets}}/img/favicon.png"/>
+#}
+{#
+    <link rel="apple-touch-icon" href="{{assets}}/ico/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{assets}}/ico/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{assets}}/ico/apple-touch-icon-114x114.png">
+#}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" media="screen,print"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="{{assets}}/css/layout.css" media="screen"/>
+
+{% block links %}
+{% endblock links %}
+
+{% block type %}
+{% endblock type %}
+
+{% block css %}
+{% endblock css %}
+
+</head>
+<body lang="en-GB">
+    {% block navigation %}
+	{% include 'navbar.twig' %}
+    {% endblock navigation %}
+
+    <div class="container">
+	{% block pageheader %}
+	    <header class="row">
+		{% block header %}
+		{% endblock header %}
+	    </header>
+	{% endblock pageheader %}
+
+	{% block main %}
+	{% endblock main %}
+
+	{% block pagefooter %}
+	    <footer class="row">
+		{% block footer %}
+		{% endblock footer %}
+	    </footer>
+	{% endblock pagefooter %}
+    </div>
+
+    <!--[if lt IE 9]>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!--<![endif]-->
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+    {% block scripts %}
+    {% endblock scripts %}
+
+    <script>
+	var base = '{{base}}';
+
+	{% block setup %}
+	{% endblock setup %}
+
+	$(function(){
+	    {% block onload %}
+	    {% endblock onload %}
+	})
+    </script>
+</body>
+</html>

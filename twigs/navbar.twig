@@ -1,0 +1,89 @@
+    <div class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{base}}/">{{context.sitename}}</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+            
+                    {% if not context.hasuser %}
+                        <li{{page == 'login' ? ' class="active"'}}><a href="{{base}}/login">Login</a></li>
+                    {% endif %}
+                    
+                    {% if context.hasstaff %}
+                        <li{{page == 'upload' ? ' class="active"'}}><a href="{{base}}/upload">Upload Publication</a></li>
+                        <li{{page == 'mypublications' ? ' class="active"'}}><a href="{{base}}/mypublications">My Uploads</a></li>
+                    {% endif %}
+                    
+                    <li{{page == 'find' ? ' class="active"'}}><a href="{{base}}/find">Find Publication</a></li>
+                    <li{{page == 'recent' ? ' class="active"'}}><a href="{{base}}/recent">Recent Publications</a></li>
+
+                    {% if context.hasuser %}
+                        <li{{page == 'bookmark' ? ' class="active"'}}><a href="{{base}}/bookmark">Bookmarks</a></li>
+                    {% endif %}
+                    
+                    <li{{page == 'contact' ? ' class="active"'}}><a href="{{base}}/contact">Contact</a></li>
+                    
+                    {% if context.hasadmin %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{base}}/admin/pages">Pages</a></li>
+                                <li><a href="{{base}}/admin/users">Users</a></li>
+                                <li><a href="{{base}}/admin/contexts">Contexts</a></li>
+                                <li><a href="{{base}}/admin/roles">Roles</a></li>
+                                <li><a href="{{base}}/admin/department">Departments</a></li>
+                                <li><a href="{{base}}/admin/publication">Publication Types</a></li>
+                                <li><a href="{{base}}/admin/info">PHP Info</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    
+                    {% if context.hasdeveloper %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Developer<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{base}}/devel/hack">Run Code</a></li>
+                                <li><a href="{{base}}/devel/fail">Fail</a></li>
+                                <li><a href="{{base}}/devel/throw">Throw</a></li>
+                                <li><a href="{{base}}/devel/mail">Test mail</a></li>
+{#
+                                <li><a href="{{base}}/devel/errlog">View Error Log</a></li>
+                                <li><a href="{{base}}/devel/clearlog">Clear Error Log</a></li>
+#}
+
+                            </ul>
+                        </li>
+                        
+                    {% endif %}
+                    
+            </ul>
+            
+            {% if context.hasuser %}
+            
+                <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user{% if context.hasadmin %} text-danger{% endif %}"></i><b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{base}}/logout">Logout</a></li>
+                                <li><a href="{{base}}/profile">Profile</a></li>
+                            </ul>
+                        </li>
+                </ul>
+                
+            {% endif %}
+            
+            <form class="navbar-form navbar-right" name="find" method="GET" action="{{base}}/find">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="titlepub" placeholder="Quick Search">
+                </div>
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </form>
+            
+        </div>
+    </div>

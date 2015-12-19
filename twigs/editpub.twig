@@ -1,0 +1,114 @@
+{# Page to edit a existing  publication information #}
+{% extends 'page.twig' %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/parsley.min.js"></script>
+    <script src="{{assets}}/js/parsley.remote.min.js"></script>
+    <script src="{{assets}}/js/util.js"></script>
+{% endblock scripts %}
+
+{% block onload %}
+
+    $('#addmore').click( function()
+    {
+        // Get the author area
+        var area = $('#authorarea');
+        // Append a new input to it.
+        area.append('<input type="text" id="authors" name="authors[]" placeholder="e.g. Mark Marvin" class="form-control" required="required" /> <br />');
+    });
+
+    $('#removelast').click( function()
+    {
+        if ($('#authorarea input').length > 1)
+        {
+            // Get the final author area
+            var area = $('#authorarea input:last');
+            // And the line break
+            var linebreaks = $('#authorarea br:last');
+
+            area.remove();
+            linebreaks.remove();
+        }
+    });
+
+{% endblock onload %}
+
+{% block header %}
+    {% if pub.id %}
+        <div class="col-md-12">
+    	<h1>Editing publication information: {{pub.id}}</h1>
+        </div>
+    {% endif %}
+{% endblock header %}
+
+{% block main %}
+    {% if pub.id %}
+        <section class="row">
+            <div class="form-group col-md-12">
+                <form action="" method="post" id="editform" class="well form-horizontal container" data-parsley-validate>
+                    <div class="col-md-6">
+                        <span><b>Chose Category</b></span> 
+                        <br />
+                        <div class="btn-group inline" data-toggle="buttons">
+                            {# The Admin Populates the Publication Types from the Admin Panel #}
+                            {# Values would be: Papers, Experimental Results, Mobile Applications, Source Code #}
+                            {% for t in siteinfo.publicationtypes %}
+                                {% if pub.category == t.id %}
+                                    <label class="btn btn-default active"><input type="radio" name="category" value="{{t.id}}" checked="checked" /> {{t.name}} </label>
+                                {% else %}
+                                    <label class="btn btn-default"><input type="radio" name="category" value="{{t.id}}" /> {{t.name}} </label>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <span><b>Chose Department</b></span> 
+                        <br />
+                        <div class="dropdown">
+                            <select class="form-control" name="department">
+                            {# Populate current department first #}
+                            {% for d in siteinfo.departments %}
+                                {% if pub.department == d.id %}
+                                    <option value="{{d.id}}">{{d.name}}</option>
+                                {% endif %}
+                            {% endfor %}
+                            {% for d in siteinfo.departments %}
+                                <option value="{{d.id}}">{{d.name}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    </div>                
+                    <label for="titlepub" class="control-label">Publication Name</label>
+                    <input type="text" id="titlepub" name="titlepub" value="{{pub.name}}" class="form-control" required="required" />
+                    <div class="cold-md-12" id="authorarea">
+                    <label for="authors" class="control-label">Author Information</label>
+                    {% for auth in auths %}
+                        <input type="text" id="authors" name="authors[]" value="{{auth.name}}" class="form-control" required="required" />
+                    {% endfor %}
+                    </div>
+                    <div>
+                        <button type='button' class="btn btn-secondary" id="addmore">Add an Author</button>
+                        <button type='button' class="btn btn-secondary" id="removelast">Remove last Author</button>
+                    </div>
+                    <label for="description">Description</label>
+                    <textarea class="form-control" rows="10" id="description" name="description" required="required">{{pub.description}}</textarea>
+                    <label for="license">Licensing Information</label>
+                    <textarea class="form-control" rows="10" id="license" name="license" required="required">{{pub.license}}</textarea>
+                    <br />
+                    <div class="text-center col-md-12">
+                        <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-pencil"></span> Edit your publication</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    {% else %}
+        {% if error %}
+            <div class="alert alert-info" role="alert">{{error}}</div>
+        {% else %}
+            <div class="alert alert-info" role="alert">This publication, with the entered id does not exist.</div>
+        {% endif %}
+    {% endif %}
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

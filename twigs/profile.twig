@@ -1,0 +1,27 @@
+{% extends 'page.twig' %}
+
+{% block header %}
+    <div class="col-md-12">
+    <h1 class="cntr">View User Profile</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <div class="col-md-9">
+            <p>
+                <b>Welcome to your user profile</b>: profile changes are made by contacting
+                the administrator; if you are a staff member you may contact the administrator
+                requesting said role, thus enabling you to upload publications. Users may create
+                normal accounts at any time, but are constrained in what they can edit.
+            </p>
+        </div>
+        <div class="col-md-6">
+            <h3>Username: {{user.login}}</h3>
+            <h4>E-mail Address: {{user.email}}</h4>
+            <h4>Joined: {{user.joined}}</h4>
+            <h4>Your role: {{role}}</h4>
+        </div>
+    </section>
+{% endblock main %}
+

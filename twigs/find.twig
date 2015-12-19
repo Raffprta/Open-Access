@@ -1,0 +1,75 @@
+{% extends 'page.twig' %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/parsley.min.js"></script>
+    <script src="{{assets}}/js/parsley.remote.min.js"></script>
+{% endblock scripts %}
+
+{% block onload %}
+
+    $('#find').parsley();
+
+{% endblock onload %}
+
+{% block header %}
+    <div class="col-md-12">
+    <h1 class="cntr">Search for publications</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+    {% for msg in error %}
+        <div class="alert alert-info" role="alert">{{msg}}</div>
+    {% endfor %}
+    </section>
+    <section class="row">
+        <div class="form-group col-md-12">
+        <form action="{{base}}/find" method="get" name="find" id="find" class="well form-horizontal container" data-parsley-validate>
+        <fieldset>
+            <legend>Search</legend>
+            <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
+                    <label for="titlepub" class="control-label">By Keywords (Title or Description)</label>
+                    <input type="text" id="titlepub" name="titlepub" placeholder="e.g. Genetic Algorithms" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label for="category" class="control-label"><b>Or by Category</b></label/> 
+                    <br />
+                    <div class="btn-group inline" data-toggle="buttons">
+                        {# The Admin Populates the Publication Types from the Admin Panel #}
+                        {# Values would be: Papers, Experimental Results, Mobile Applications, Source Code #}
+                        {% for t in siteinfo.publicationtypes %}
+                            <label class="btn btn-default"><input type="radio" name="category" value="{{t.id}}" /> {{t.name}} </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+                <div class="form-group col-md-6">
+                    <label for="titlepub" class="control-label">Or by Author</label>
+                    <input type="text" id="author" name="author" placeholder="e.g. Mark Marvin" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label for="department" class="control-label"><b>Or by Department</b></label/> 
+                    <br />
+                    <div class="dropdown">
+                        <select class="form-control" name="department">
+                            <option value="">Select a Department</option>
+                        {% for d in siteinfo.departments %}
+                            <option value="{{d.id}}">{{d.name}}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center for-group col-md-11">
+                <button class="btn btn-primary" type="submit">Search Publications</button>
+            </div>
+        </fieldset>
+        </form>
+        </div>
+    </div>
+    </section>
+{% endblock main %}
+

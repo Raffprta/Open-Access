@@ -1,0 +1,16 @@
+body {
+  font-family: sans-serif;
+  background-color: white; }
+
+/*------------------------------------*\
+    For the /admin pages
+\*------------------------------------*/
+/**
+ * Used for delete buttons
+ */
+.delb {
+  color: red;
+  cursor: pointer; }
+
+.noconfirm {
+  color: red; }

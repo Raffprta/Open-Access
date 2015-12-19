@@ -1,0 +1,32 @@
+{% extends 'page.twig' %}
+
+{% block header %}
+
+        <div class="col-md-12">
+            <h1 class="cntr">
+                Download the publication as a .zip archive of all files.
+            </h1>
+        </div>
+
+{% endblock header %}
+
+{% block main %}
+    {% for err in errors %}
+            <div class="alert alert-info" role="alert">Error: {{err}}</div>
+    {% else %}
+        {% if pub %}   
+        <div class="col-md-12"> 
+            <form action="" method="post">
+                <button class="btn btn-primary inline btn-lg">
+                    <span class="glyphicon glyphicon-download"></span>
+                    Download a zip file of this publication
+                </button> 
+                <input type="hidden" name="enablezip" value="enablezip" />
+            </form>
+        </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">This publication, with the entered id does not exist.</div>
+        {% endif %}
+    {% endfor %}
+{% endblock main %}
+

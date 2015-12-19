@@ -1,0 +1,65 @@
+{% extends 'page.twig' %}
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load. NB you don't need <script></script> tags  here #}
+{% endblock setup %}
+
+{% block onload %}
+{# Any javascript you need that MUST run on load. NB you don't need <script></script> tags  here #}
+{% endblock onload %}
+
+{% block header %}
+    <div class="col-md-12">
+        <h1>About The Framework</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="col-md-9 col-md-offset-2">
+	    <pre>
+ * The framework assumes a self contained directory structure for a site like this :
+ *
+ * DOCUMENT_ROOT
+ *    /sitename         This can be omitted if the site is the only one present and at the root
+ *        /assets
+ *            /css      CSS files
+ *            /i18n     Any internationalisation files you may need
+ *            /images   Image files
+ *            /js       JavaScript
+ *            /...      Any other stuff that can be accessed without intermediation through PHP
+ *        /class        PHP class definition files named "classname.php"
+ *        /class/admin  PHP class files for the administrative functions provided by the framework
+ *        /errors       Files used for generating error pages.
+ *        /lib          PHP files containing non-class definitions
+ *        /twigcache    If twigcacheing is on this is where it caches
+ *        /twigs        TWIG template files go in here
+ *        /twigs/admin  Twig files for the admin support of the framework
+ *        /vendor       If you are using composer then it puts stuff in here.
+ *
+ * The .htaccess file directs
+ * 	anything in /assets to be served by Apache.
+ * 	anything beginning "ajax" to be called directly i.e. ajax.php
+ *                  (this may or may not be useful - remove it if not)
+ * 	everything else gets passed into index.php where it treats the URL thus:
+ * 		/		=>	/home and then
+ * 		/action/r/e/st/	=>	Broken down in Context class. An action and an array of parameters.
+ * 		Query strings and/or post fields are in the $_ arrays as normal.
+	    </pre>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block footer %}
+    <article class="col-md-12">
+        <p class="center-block">Footer</p>
+    </article>
+{% endblock footer %}

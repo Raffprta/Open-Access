@@ -1,0 +1,254 @@
+{% extends 'page.twig' %}
+
+{% block onload %}
+
+    {# Twig Decides which bookmark button to show #}
+
+    {% if setbookmark %}
+        $("button#bookmark").hide();
+        $("button#bookmarkdel").show();
+    {% else %}
+        $("button#bookmark").show();
+        $("button#bookmarkdel").hide();
+    {% endif %}
+
+    {# populate the message with clickable links to downloads #}
+    var msg = "<ul>" +
+                {% for file in files %}
+                {# calculate the file size in MB #}
+                {% set filesize = (file.size / 1024 / 1024)|round(2, 'common') %}
+                    "<li><a href='{{file.path}}' target='_blank' >{{file.name}}</a>" +
+                    " -- size: " + {%if filesize == 0 %}
+                                   {# Recalculate as kb #}
+                                     "{{(file.size / 1024 )|round(2, 'common')}} kb" + 
+                                   {% else %}
+                                     "{{filesize}} mb" +
+                                   {% endif %}
+                    {% if category.name == 'Source Code' %}
+                        " -- or click <a href='{{base}}/viewsrc/{{file.path|replace({ (base ~ '/assets/data/') : ''})}}'>" +
+                        "here</a> to view this file's source code." +
+                    {% endif %}
+                    "</li>" +
+                {% endfor %}
+               "</ul>";
+
+
+    // Handle displaying files to download.
+    $("#download").click(function()
+    {
+        bootbox.dialog(
+        {
+            message: "<h5> Click on each file name to download... </h5>" + msg,
+            title: "Download Files",
+            buttons: 
+            {
+                main: 
+                {
+                    label: "Or otherwise download all as Zip archive",
+                    className: "btn-primary",
+                    callback: function()
+                                        {
+                                            // Go to the download as zip page, use REST to get last ID in the URL.
+                                            window.location.href="{{base}}/downloadzip/" + window.location.href.split('/').pop();
+                                        }
+                }
+            }
+        });
+    });
+
+    // Handle bookmarking a publication.
+    $("#bookmark").click(function ()
+    {
+        $.post('{{base}}/ajax.php', 
+        {
+            op : 'addbookmark',
+            id : {{pub.id}},
+        }, function(data)
+        {
+           bootbox.alert("Bookmark successfully added.");
+           // Show the delete button instead and hide this.
+           $("#bookmarkdel").show();
+           $("#bookmark").hide();
+        }
+        )
+    });
+
+    // Handle deleting the bookmark of a publication.
+    $("#bookmarkdel").click(function ()
+    {
+        $.post('{{base}}/ajax.php', 
+        {
+            op : 'delbookmark',
+            id : {{pub.id}},
+        }, function(data)
+        {
+           bootbox.alert("Bookmark successfully removed.");
+           // Show the add button instead and hide this.
+           $("#bookmark").show();
+           $("#bookmarkdel").hide();
+        }
+        )
+    });
+
+    // Handle the deleting of a publication if staff or the deleting of a post
+    {% if context.hasstaff %}
+        $("#delpub").click(function(e) 
+        {
+            e.preventDefault();
+            bootbox.confirm("Are you sure you want to delete this publication?" +
+                            " Once you confirm this, you can never get it back.", function(confirmed)
+            {
+                if(confirmed)
+                {
+                    $.post('{{base}}/ajax.php', 
+                    {
+                        op : 'delpub',
+                        id : {{pub.id}},
+                    }, function(data)
+                    {
+                        if(data.startsWith("Error"))
+                        {
+                            // Error
+                            bootbox.alert(data);
+                        }
+                        else
+                        {
+                            // Replace the dialog.
+                            window.location.replace('{{base}}');
+                        }
+                    }
+                    )
+                }
+            }
+            )
+        }
+        )
+
+        $(".delpost").click(function(e) 
+        {
+            e.preventDefault();
+            var clickval = $(this).data('post-id');
+            bootbox.confirm("Are you sure you want to delete this publication?" +
+                            " Once you confirm this, you can never get it back.", function(confirmed)
+            {
+                if(confirmed)
+                {
+                    $.post('{{base}}/ajax.php', 
+                    {
+                        op : 'delpost',
+                        id : {{pub.id}},
+                        postid : clickval,
+                    }, function(data)
+                    {
+                        if(data.startsWith("Error"))
+                        {
+                            // Error
+                            bootbox.alert(data);
+                        }
+                        else
+                        {
+                            // Reload the page
+                            location.reload();
+                        }
+                    }
+                    )
+                }
+            }
+            )
+        }
+        )
+    {% endif %}
+
+    // Predictive text feature.
+
+
+
+{% endblock onload %}
+
+{% block header %}
+    {% if pub %}
+        <div class="col-md-12">
+            <!-- Bookmark button, clicking this adds to the personal user bookmarks -->
+            <h1 class="cntr">
+            {# Do not render the buttons if the user is not logged in, forging the AJAX
+               reuqest manually would nevertheless still result in a 403 reply #}
+            {% if context.hasuser %}
+                <button class="btn btn-primary inline btn-sm" type="button" id="bookmark">
+                    <span class="glyphicon glyphicon-star"></span>
+                </button> 
+                <button class="btn btn-danger inline btn-sm" type="button" id="bookmarkdel">
+                    <span class="glyphicon glyphicon-star"></span>
+                </button> 
+            {% endif %}
+                Download the publication
+            </h1>
+            <p> Alternatively, you can click the star to bookmark it if you are logged in!</p>
+            {# Deletion AJAX shown to staff - serverside checks ensure its staff #}
+            {% if context.hasstaff %}
+                <button class="btn btn-danger inline btn-md" type="button" id="delpub">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    Delete this publication
+                </button> 
+                <button class="btn btn-primary inline btn-md" type="button" id="editpub">
+                    <a href="{{base}}/editpub/{{pub.id}}" >
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    Edit this publication</a>
+                </button> 
+            {% endif %}
+
+        </div>
+    {% endif %}
+{% endblock header %}
+
+{% block main %}
+    {% if pub %}    
+        {# Set the glyphicon depending on the category #}
+        {% if category.name == "Experimental Result" %}
+            {% set glyph = 'stats' %}
+        {% elseif category.name == "Source Code" %}
+            {% set glyph = 'folder-open' %}
+        {% elseif category.name == "Paper" %}
+            {% set glyph = 'book' %}
+        {% elseif category.name == "Mobile Applications" %}
+            {% set glyph = 'phone' %}
+        {% else %}
+            {% set glyph = 'question-sign' %}
+        {% endif %}
+        <section class="row">
+            <div class="col-md-6"> 
+                <h3><span class="glyphicon glyphicon-{{glyph}}"></span> {{pub.name}}</h3>
+                {% for author in auths %}
+                    <h5><i>Author: {{author.name}}</i></h5>
+                {% endfor %}
+                <h5><b>Published by: {{publisher.login}} to the department {{department.name}}</b></h5>
+                <p><h4>Description:</h4>
+                    {# Do not remove line breaks when displaying #}
+                    {{pub.description|nl2br}}
+                </p>
+            </div>
+            <div class="col-md-3 text-right">
+                <img width="200px" height="230px" src="{{image.path}}" />
+            </div>
+            <div class="col-md-9">
+                <p><h4>License</h4>
+                    {# Do not remove line breaks when displaying #}
+                    {{pub.license|nl2br}}
+                </p>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg" type="button" id="download">
+                        <span class="glyphicon glyphicon-cloud-download"></span> Download this publication
+                    </button>                 
+                </div>
+            </div>
+        </section>
+        <hr />
+        {# Import the posting mechanism #}
+        {% if context.hasuser %}
+            {% embed 'post.twig' %}
+            {% endembed %}
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info" role="alert">This publication, with the entered id does not exist.</div>
+    {% endif %}
+{% endblock main %}
+

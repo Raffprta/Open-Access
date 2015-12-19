@@ -1,0 +1,129 @@
+{% extends 'page.twig' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/spinner.css">
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/parsley.min.js"></script>
+    <script src="{{assets}}/js/parsley.remote.min.js"></script>
+    <script src="{{assets}}/js/spinner.js"></script>
+{% endblock scripts %}
+
+{% block onload %}
+
+    $('#uploadform').parsley();
+    
+    $('#addmore').click( function()
+    {
+        // Get the author area
+        var area = $('#authorarea');
+        // Append a new input to it.
+        area.append('<br /> <input type="text" id="authors" name="authors[]" placeholder="e.g. Mark Marvin" class="form-control" required="required" /> <br />');
+    });
+
+    $('#up').click( function()
+    {
+
+        // Get the file area
+        var area = $('#file');
+        // Append a new input to it.
+        area.after('<br /><input type="file" name="fileupload[]" required="required">');
+    });
+
+    $('#down').click( function()
+    {
+        if ($('#wrapper input').length > 1)
+        {
+            // Get the file area
+            var area = $('#wrapper input:last');
+            var linebreaks = $('#wrapper br:last');
+            // Remove them
+            area.remove();
+            linebreaks.remove();
+        }
+    });
+
+    
+{% endblock onload %}
+
+{% block header %}
+    <section class="row">
+    {% for msg in error %}
+        <div class="alert alert-info" role="alert">{{msg}}</div>
+    {% endfor %}
+    </section>
+    <div class="col-md-12">
+    <h1 class="cntr">Upload your publication</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <div class="form-group col-md-12">
+            <form action="{{base}}/upload" method="post" id="uploadform" class="well form-horizontal container" enctype="multipart/form-data" data-parsley-validate>
+                <div class="col-md-6">
+                    <span><b>Chose Category</b></span> 
+                    <br />
+                    <div class="btn-group inline" data-toggle="buttons">
+                        {# The Admin Populates the Publication Types from the Admin Panel #}
+                        {# Values would be: Papers, Experimental Results, Mobile Applications, Source Code #}
+                        {% for t in siteinfo.publicationtypes %}
+                            {% if loop.index0 == 0 %}
+                                <label class="btn btn-default active"><input type="radio" name="category" value="{{t.id}}" checked="checked" /> {{t.name}} </label>
+                            {% else %}
+                                <label class="btn btn-default"><input type="radio" name="category" value="{{t.id}}" /> {{t.name}} </label>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <span><b>Chose Department</b></span> 
+                    <br />
+                    <div class="dropdown">
+                        <select class="form-control" name="department">
+                        {% for d in siteinfo.departments %}
+                            <option value="{{d.id}}">{{d.name}}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <label for="spinner">How many publication files do you want to upload?</label>
+                <div class="input-group spinner">
+                <input type="text" class="form-control" id="spinner" value="1">
+                <div class="input-group-btn-vertical">
+                  <button class="btn btn-default" type="button" id="up"><i class="fa fa-caret-up"></i></button>
+                  <button class="btn btn-default" type="button" id="down"><i class="fa fa-caret-down"></i></button>
+                </div>
+              </div>
+                <div id="wrapper">
+                    <label for="file">Publication file</label>
+                    <!-- Multiple files are chosen via the spinner and populated using JQuery -->
+                    <input type="file" name="fileupload[]" id="file" required="required">
+                </div>
+                <!-- Empty list to represent the file names added -->
+
+                <label for="image">Image Preview</label>
+                <input type="file" name="fileupload[]" id="image" accept="image/*" required="required">
+                <label for="titlepub" class="control-label">Publication Name</label>
+                <input type="text" id="titlepub" name="titlepub" placeholder="e.g. Genetic Algorithms Research" class="form-control" required="required" />
+                <label for="authors" class="control-label">Author Information</label>
+                <div class="cold-md-12" id="authorarea">
+                    <input type="text" id="authors" name="authors[]" placeholder="e.g. Mark Marvin" class="form-control" required="required" />
+                </div>
+                <div>
+                    <button type='button' class="btn btn-secondary" id="addmore">Add an Author</button>
+                </div>
+                <label for="description">Description</label>
+                <textarea class="form-control" rows="10" id="description" name="description" required="required"></textarea>
+                <label for="license">Licensing Information</label>
+                <textarea class="form-control" rows="10" id="license" name="license" required="required"></textarea>
+                <br />
+                <div class="text-center col-md-12">
+                    <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-cloud-upload"></span> Upload your publication</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock main %}
+

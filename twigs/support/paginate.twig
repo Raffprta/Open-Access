@@ -1,0 +1,49 @@
+    {% if pages >= 2 %}
+	{% if page > pages %}
+	    {% set page = pages %}
+	{% elseif page < 1 %}
+	    {% set page = 1 %}
+	{% endif %}
+	<div>
+	    <ul class="pagination">
+		{% if page > 1 %}
+
+                    <li><a href="{{url}}page=1&amp;pagesize={{pagesize}}" title="Page 1"><i class="fa fa-fast-backward"></i></a></li>
+		    <li><a href="{{url}}page={{page-1}}&amp;pagesize={{pagesize}}" title="Prev"><i class="fa fa-backward"></i></a></li>
+		{% else %}
+		    <li class="disabled"><a class="noclick"><i class="fa fa-fast-backward"></i></a></li>
+		    <li class="disabled"><a class="noclick"><i class="fa fa-backward"></i></a></li>
+		{% endif %}
+                {% set start = page - 2 %}
+                {% set end = page + 2 %}
+                {% if end > pages %}
+                    {% set end = pages %}
+                    {% set start = end - 4 %}
+                {% endif %}
+                {% if start < 1 %}
+                    {% set start = 1 %}
+                    {% set end = pages > 5 ? 5 : pages %}
+                {% endif %}
+                {% if start != 1 %}
+                    <li class="disabled"><a class="noclick">&hellip;</a></li>
+                {% endif %}
+		{% for val in start..end %}
+                    {%if val == page %}
+                        <li class="disabled"><a class="noclick">{{val}}</a></li>
+                    {% else %}
+                        <li><a href="{{url}}page={{val}}&amp;pagesize={{pagesize}}">{{val}}</a></li>
+                    {% endif %}
+		{% endfor %}
+                {% if end != pages %}
+                    <li class="disabled"><a class="noclick">&hellip;</a></li>
+                {% endif %}
+		{% if page < pages %}
+		    <li><a href="{{url}}page={{page+1}}&amp;pagesize={{pagesize}}" title="Prev"><i class="fa fa-forward"></i></a></li>
+                    <li><a href="{{url}}pagesize={{pagesize}}{{help.stat(status)}}" title="Page {{pages}}"><i class="fa fa-fast-forward"></i></a></li>
+		{% else %}
+		    <li class="disabled"><a  class="noclick"><i class="fa fa-forward"></i></a></li>
+		    <li class="disabled"><a  class="noclick"><i class="fa fa-fast-forward"></i></a></li>
+		{% endif %}
+	    </ul>
+	</div>
+    {% endif %}

@@ -1,0 +1,6 @@
+RewriteEngine on
+Options -Indexes +FollowSymlinks
+RewriteBase /framework
+RewriteRule ^(ajax.*) $1 [L,NC,QSA]
+RewriteRule ^(assets)/(.*) $1/$2 [L,NC]
+RewriteRule ^.*$ index.php [L,QSA]

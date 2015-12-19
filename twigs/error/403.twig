@@ -1,0 +1,22 @@
+{% extends 'page.twig' %}
+
+{% block header %}
+    <div class="col-md-8  col-md-offset-2">
+	<h1>Access denied!</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well">
+                Sorry, you do not have permission to do that.
+            </div>
+            <p><a href="{{base}}/">Return to home page</a></p>
+	</div>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{# I don't want a footer #}
+{% endblock pagefooter %}

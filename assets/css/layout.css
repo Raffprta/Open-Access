@@ -1,0 +1,163 @@
+/*------------------------------------*\
+    Font imports
+\*------------------------------------*/
+@import url("http://fonts.googleapis.com/css?family=Lato:300,400,700");
+
+/*------------------------------------*\
+    Things used everywhere
+\*------------------------------------*/
+body {
+    font-family: "Lato";
+    background: #99AEF2;
+    color: #ffffff;
+}
+
+img {
+    margin: 10px;
+}
+
+a {
+    color: #049372;
+}
+
+form, .control-label {
+    color: black;
+}
+
+.vertical-center {
+  min-height: 80%;  
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.inline {
+  /* Generic inline class */
+  display: inline;
+}
+
+#parsley-id-multiple-category {
+  /* Fix for the extra block it adds on radio-group elements in bootstrap */
+  display: none;
+}
+
+div.bootbox-body, div.modal-header {
+  /* Fix for our theme for bootbox colours */
+  color: black;
+}
+
+button a {
+  /* Make button a href's our theme colour */
+  color: white;
+}
+
+.hidden {
+  display: hidden;
+}
+
+.forum-bg {
+  /* My posting style */
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 2px;
+}
+
+.forum-bg:nth-child(even) {
+  background-color: #7791ee;
+}
+
+.forum-bg:nth-child(odd) {
+  background-color: #6685f0;
+}
+
+.forum-bg p:first-child {
+    border-bottom: 1px dashed #ddd;
+}
+
+.forum-divisor {
+  /* Divisor between the top and bottom */
+  margin-bottom: 10px;
+}
+
+/*------------------------------------*\
+    Navigation theme, generated using:
+    http://work.smarchal.com/twbscolor/
+\*------------------------------------*/
+
+.navbar-default {
+  background-color: #698cc9;
+  border-color: #3b48a5;
+}
+.navbar-default .navbar-brand {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: #ecdbff;
+}
+.navbar-default .navbar-text {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #ecdbff;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: #ecdbff;
+  background-color: #3b48a5;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #ecdbff;
+  background-color: #3b48a5;
+}
+.navbar-default .navbar-toggle {
+  border-color: #3b48a5;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #3b48a5;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #ecf0f1;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #ecf0f1;
+}
+.navbar-default .navbar-link {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-link:hover {
+  color: #ecdbff;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #ecf0f1;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #ecdbff;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #ecdbff;
+    background-color: #3b48a5;
+  }
+}
+
+
+/*------------------------------------*\
+    For the /admin pages
+\*------------------------------------*/
+
+/**
+ * Used for delete buttons
+ */
+.delb {
+    color: red;
+}
+
+.actb, .admb, .delb, .devb, .fixed {
+    cursor: pointer;
+}
+
+.noconfirm { color: red; }

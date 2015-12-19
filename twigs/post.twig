@@ -1,0 +1,35 @@
+{# Page to provide posting facilities, to be imported by files such as viewpub.twig #}
+
+
+{% block main %}
+    <section class="row">
+        <div class="col-md-12 forum-divisor">
+        {% for post in posts %}
+            <div class="col-md-12 forum-bg">
+                <p> Post made by: {{posters[loop.index0]}}</p>
+                <p> {{post.content|nl2br}} </p>
+                {% if context.hasstaff %}
+                    <button class="btn btn-danger btn-xs delpost" type="button" data-post-id="{{post.id}}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        Delete
+                    </button>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">No posts could be found... be the first one to make one.</div>
+        {% endfor %}
+        </div>
+        <div class="col-md-12">
+            {# Post this form RESTfully #}
+            <form action="{{base}}/post/{{context.rest[0]}}" class="well form-horizontal container" method="post">
+                <label for="content">Post a comment to this publication (max 8000 chars).</label>
+                <textarea class="form-control" rows="5" id="content" name="content" required="required"></textarea>
+                <br />
+                <div class="text-center col-md-12">
+                    <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-share"></span> Submit Comment</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock main %}
+

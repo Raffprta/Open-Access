@@ -1,0 +1,55 @@
+{% extends 'page.twig' %}
+
+{% block header %}
+    <div class="col-md-12">
+        <h1 class="cntr">Welcome to Open Access</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <div class="col-md-6">
+            <p>
+                Welcome to <strong>Open Access</strong> a publication system where you can search, view and upload (if you are a faculty member)
+                publications for users to access. We pride ourselves in implementing an open source based model on not just code, but raw data,
+                formal publications and mobile applications. You do not need an account to browse our publications, however it is convenient to
+                make one to access the extra features present within the site such as bookmarking your favourite open access publication or 
+                commenting on a publication. 
+            </p>
+            <p>
+                Our site is based on the tenet of accessibility and ease of use, in which we promise a fast and intuitive way of accessing the 
+                material at your leisure. This can be viewed as an extension of our currently existing library system and university catalouge 
+                where books can be perused both as physical copies and e-books. Below is the Robinson Library, where accessing and ordering
+                textbooks and other research materials is possible via the university system. We aim to extend that by providing a system 
+                which is more user friendly and tailored to the upload of more ranges of material (such as code) to fulfil further requirements.
+            </p>
+            <!-- Source: https://upload.wikimedia.org/wikipedia/commons/b/b0/The_Robinson_Library,_Newcastle_University_-_geograph.org.uk_-_1759799.jpg -->
+            <img class="center-block" width="481" height="271" alt="Robinson Library" title="Robinson Library" src="{{base}}/assets/images/lib.jpg" />
+        </div>
+        <div class="col-md-6">
+            <h4> Libraries from antiquity... to now </h4>
+            <p>
+                The first libraries consisted of archives of the earliest form of writing—the clay tablets in cuneiform script discovered in
+                temple rooms in Sumer, some dating back to 2600 BC.[3] These archives, which mainly consisted of the records of commercial transactions
+                or inventories, mark the end of prehistory and the start of history.
+            </p>
+            <p>
+                From then, the Library of Alexandria, in Egypt, was the largest and most significant great library of the ancient world.
+                It flourished under the patronage of the Ptolemaic dynasty and functioned as a major center of scholarship from its construction in 
+                the 3rd century BC until the Roman conquest of Egypt in 30 BC. 
+            </p>
+            <p>
+                Libraries have flourished since the days of antiquity to modern private collections, to edifices offering vast amounts of books
+                to the public, to the digital age which displays open access text to be perused digitally. 
+            </p>
+             
+            <cite> Information from: <a href="https://en.wikipedia.org/wiki/History_of_libraries" />Wikipedia</a> </cite>
+             
+            <!-- Source: http://c.fastcompany.net/multisite_files/fastcompany/poster/2014/11/3038697-poster-p-1-why-business-books-are-blue-and-other-tricky-marketing-techniques.jpg -->
+            <img class="center-block" width="481" height="271" alt="books" title="books" src="{{base}}/assets/images/books.jpg" />
+            
+        </div>
+    </div>
+    </section>
+{% endblock main %}
+
